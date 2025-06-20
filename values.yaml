@@ -1,0 +1,21 @@
+replicaCount: 2
+
+image:
+  repository: 491085414563.dkr.ecr.us-east-1.amazonaws.com/go-web-app
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+ingress:
+  enabled: true
+  host: k88pro.devfaizi.xyz
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+
+app:
+  name: go-web-app
+  port: 8080
