@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  repository: 491085414563.dkr.ecr.us-east-1.amazonaws.com/go-web-app
+  repository: faizanabuzar/go-web-app
   tag: latest
   pullPolicy: IfNotPresent
 
@@ -15,6 +15,10 @@ ingress:
   host: k88pro.devfaizi.xyz
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    # EKS ALB Controller annotations (uncomment if using ALB)
+    # kubernetes.io/ingress.class: alb
+    # alb.ingress.kubernetes.io/scheme: internet-facing
+    # alb.ingress.kubernetes.io/target-type: ip
 
 app:
   name: go-web-app
