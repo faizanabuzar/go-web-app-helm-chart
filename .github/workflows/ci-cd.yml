@@ -9,14 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-      with:
-        submodules: recursive
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
         go-version: '1.22'
     - name: Build application
-      working-directory: ./go-web-app
       run: go build -v ./...
 
   test:
@@ -24,14 +21,11 @@ jobs:
     needs: build
     steps:
     - uses: actions/checkout@v4
-      with:
-        submodules: recursive
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
         go-version: '1.22'
     - name: Run tests
-      working-directory: ./go-web-app
       run: go test -v ./...
 
   push:
@@ -39,8 +33,6 @@ jobs:
     needs: test
     steps:
     - uses: actions/checkout@v4
-      with:
-        submodules: recursive
     - name: Login to Docker Hub
       uses: docker/login-action@v3
       with:
@@ -49,7 +41,7 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
-        context: ./go-web-app
+        context: .
         push: true
         tags: |
           faizanabuzar/go-web-app:${{ github.run_number }}
@@ -61,15 +53,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        submodules: recursive
         token: ${{ secrets.GITHUB_TOKEN }}
     - name: Update Helm values
       run: |
         sed -i 's|tag: .*|tag: "${{ github.run_number }}"|' values.yaml
     - name: Commit updated Helm chart
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+        git config --local user.email "faizanabuzar@hotmail.com"
+        git config --local user.name "Faizan Abuzar"
         git add values.yaml
         git commit -m "Update image tag to ${{ github.run_number }}" || exit 0
         git push
