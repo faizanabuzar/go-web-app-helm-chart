@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: faizanabuzar/go-web-app
-  tag: latest
+  tag: "5"
   pullPolicy: IfNotPresent
 
 service:
